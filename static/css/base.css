@@ -1,0 +1,38 @@
+.table {
+    border: 1px lightgrey solid;
+    border-collapse: collapse;
+}
+.date_usd {
+    width: 230px;
+    padding: 0 0 0 10px;
+    float: right;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    background-color: #e9ecef;
+    border: 1px #dee2e6 solid;
+}
+th:first-child{
+    width: 300px;
+}
+.col {
+    width: 160px;
+}
+td, th {
+    text-align: center;
+}
+.gpu_title_left{
+    text-align: left !important;
+}
+.icon img {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 5px 0;
+}
+.head_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 35px;
+}

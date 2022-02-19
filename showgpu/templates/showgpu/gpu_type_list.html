@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}WebMiningCalculator{% endblock title %}
+
+{% block content %}
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col" class="col">Хэшрейт eth</th>
+            <th scope="col" class="col">Хэшрейт ton</th>
+            <th scope="col" class="col">Профит в день</th>
+            <th scope="col" class="col">Профит в месяц</th>   
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for gpu in gpu_type_list %}
+            <tr class="tr_minheigth">
+                <td>{{ gpu.name }}</a></td>
+                <td>{{ gpu.eth }}</td>
+                <td>{{ gpu.ton }}</td>
+                <td class="icon"><img src="{% static 'assets/'|add:gpu.primary_token|add:'.png' %}">{{ gpu.day_profit }}₽</td>
+                <td class="icon"><img src="{% static 'assets/'|add:gpu.primary_token|add:'.png' %}">{{ gpu.month_profit }}₽</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
