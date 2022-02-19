@@ -1,9 +1,26 @@
 version: '3.9'
 
 services:
+  celery:
+    build: .
+    command: celery -A config worker -B
+    volumes:
+      - .:/code
+    links:
+      - redis
+    depends_on:
+      - web
+      - redis
+  redis:
+    image: redis
+    restart: always
+    container_name: 'webminingcalculator_redis'
+    command: redis-server
+    ports:
+      - '6379:6379'
   web:
    build: .
-   command: bash -c "python /code/manage.py loaddata data.json && python /code/manage.py runserver 0.0.0.0:8000"
+   command:  python /code/manage.py runserver 0.0.0.0:8000
    volumes:
     - .:/code
    ports:
