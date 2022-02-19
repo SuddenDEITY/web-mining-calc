@@ -34,7 +34,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     "check_profit": {
         "task": "parsing_app.tasks.check_profit",
-        "schedule": timedelta(minutes=2),
+        "schedule": timedelta(minutes=10),
     },
 }
 
