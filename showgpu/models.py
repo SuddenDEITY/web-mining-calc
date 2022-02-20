@@ -34,8 +34,6 @@ class GPU_Type(models.Model):
         verbose_name_plural = 'Types of GPU'
 
     def save(self, *args, **kwargs):
-        self.day_profit_dual = self.day_profit + self.day_profit*self.dual_efficiency / 100 # calculating day_profit for dual mining mode
-        self.month_profit_dual = self.day_profit_dual * 30 # calculating month_profit for dual mining mode
         self.code = self.name.lower().strip().replace(' ','') # adding code when saving object
         super(GPU_Type, self).save(*args, **kwargs)
 

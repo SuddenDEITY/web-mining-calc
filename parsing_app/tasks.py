@@ -21,8 +21,12 @@ def update_gpu_type_profit(self):
             el.primary_token = max(d, key=d.get) # getting primary_token (the most profitablle coin to mine)
             el.day_profit = d[el.primary_token]
             el.month_profit = el.day_profit * 30
-            
-        GPU_Type.objects.bulk_update(gpu_types, ['primary_token','day_profit','month_profit'])
+            el.ton_hashrate_in_dual =  el.ton * el.dual_efficiency/100
+            el.ton_profit_in_dual = el.ton_hashrate_in_dual / 1000 * current_profit.ton_daily_profit_per_1ghs
+            el.day_profit_dual = el.day_profit + float(el.ton_profit_in_dual)
+            el.month_profit_dual = el.day_profit_dual * 30
+
+        GPU_Type.objects.bulk_update(gpu_types, ['primary_token','day_profit','month_profit','day_profit_dual','month_profit_dual'])
         print('gpu_types updated')
         initialize_parsing.delay()
     except:
