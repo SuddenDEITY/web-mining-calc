@@ -1,6 +1,7 @@
 from celery import shared_task
 from showgpu.models import GPU_Type, Current_Profit
 from django.utils import timezone
+from .shops_parsers import initialize_parsing
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -23,13 +24,14 @@ def update_gpu_type_profit(self):
             
         GPU_Type.objects.bulk_update(gpu_types, ['primary_token','day_profit','month_profit'])
         print('gpu_types updated')
+        initialize_parsing.delay()
     except:
         print('update gpu_types failed,retry in 60 seconds')
         self.retry(countdown=60)
 
 @shared_task(bind=True)
 def check_profit(self):
-    '''Updating Current_Profit with new data, if parsing fails retrying in 60 secs''' 
+    '''Updating Current_Profit with new data, if parsing fails retrying in 60 secs'''
     try:
         current_profit = Current_Profit.objects.first()
         current_profit.usd_price, current_profit.eur_price = usd_eur_price() 

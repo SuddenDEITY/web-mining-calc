@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9oiyzgzv+7s&^(_7rzdj4p5tj=w@$=*=p!!$m5na3z%kf$vr@r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 CELERY_BROKER_URL = 'redis://webminingcalculator_redis:6379'
 
@@ -34,7 +34,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     "check_profit": {
         "task": "parsing_app.tasks.check_profit",
-        "schedule": timedelta(minutes=10),
+        "schedule": timedelta(minutes=1),
     },
 }
 
@@ -124,7 +124,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
-
 
 
 
