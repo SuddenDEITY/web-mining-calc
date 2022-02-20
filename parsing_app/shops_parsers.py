@@ -29,7 +29,7 @@ def initialize_parsing(self):
         get_dns_gpus()
         GPU.objects.all().delete()
         GPU.objects.bulk_create(Data.bulk_data)
-        cp = Current_Profit.objects.first()
+        cp = Data.current_profit
         cp.updated_at = timezone.now()
         cp.save()
         print('updated')
