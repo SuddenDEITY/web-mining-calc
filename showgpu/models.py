@@ -1,10 +1,12 @@
 from django.db import models
 
 class Current_Profit(models.Model):
-    ton_daily_profit_per_1ghs = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    eth_daily_profit_per_100mhs = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    usd_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    eur_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    ton_daily_profit_per_1ghs = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    eth_daily_profit_per_100mhs = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    eth_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    ton_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    usd_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    eur_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
     updated_at = models.DateTimeField(null=True,blank=True)
     
     def __str__(self) -> str:

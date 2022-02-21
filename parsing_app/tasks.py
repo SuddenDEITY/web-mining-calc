@@ -38,29 +38,36 @@ def check_profit(self):
     '''Updating Current_Profit with new data, if parsing fails retrying in 60 secs'''
     try:
         current_profit = Current_Profit.objects.first()
+        ton_profit_in_usd,ton_price_in_usd = get_ton_price_and_profit()
+        eth_profit_in_usd,eth_price_in_usd = get_eth_price_and_profit()
         current_profit.usd_price, current_profit.eur_price = usd_eur_price() 
-        current_profit.eth_daily_profit_per_100mhs = get_eth_profit() * current_profit.usd_price # getting eth profit in usd
-        current_profit.ton_daily_profit_per_1ghs = get_ton_profit() * current_profit.usd_price # getting ton profit in usd
-        current_profit.updated_at = timezone.now()
+        current_profit.eth_daily_profit_per_100mhs = eth_profit_in_usd * current_profit.usd_price # getting eth profit in usd
+        current_profit.ton_daily_profit_per_1ghs = ton_profit_in_usd * current_profit.usd_price # getting ton profit in usd
+        current_profit.eth_price = eth_price_in_usd * current_profit.usd_price
+        current_profit.ton_price = ton_price_in_usd * current_profit.usd_price
         current_profit.save()
         update_gpu_type_profit.delay()
     except:
-        print('currentprofit failed,retry in 60 seconds')
+        print('check failed,retry in 60 seconds')
         self.retry(countdown=60)
 
 
 
-def get_eth_profit():
+def get_eth_price_and_profit():
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36'}
     '''Parse and calculate current profitability for eth mining'''
-    r = requests.get(f'https://whattomine.com/coins/151-eth-ethash/history?cost=0.07&fee=0.0&format=json&hr=100&p=250', timeout=(10, 10))
+    r = requests.get('https://whattomine.com/coins/151-eth-ethash/history?cost=0.07&fee=0.0&format=json&hr=100&p=250', timeout=(10, 10))
     data = json.loads(r.text)
     daily_profit = float(data[3]['data'][0]['y'])
-    return daily_profit
+    r = requests.get('https://query1.finance.yahoo.com/v8/finance/chart/ETH-USD?region=US&lang=en-US&includePrePost=false&interval=2m&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance', timeout=(10, 10), headers=headers)
+    data = json.loads(r.text)
+    eth_usd_price = float(data['chart']['result'][0]['meta']['regularMarketPrice'])
+    return daily_profit, eth_usd_price
 
-def get_ton_profit():
-    '''Parse and calculate current profitability for ton mining'''
+def get_ton_price_and_profit():
+    '''Parse ton price and calculate current profitability for ton mining'''
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36'}
-    r = requests.get(f'https://next.ton-pool.com/stats')
+    r = requests.get('https://next.ton-pool.com/stats')
     data = json.loads(r.text)
     daily_profit = float(data['income']['last_24h'] / 10**9) # division by 10**9 to get profit in coins
     r = requests.get('https://price-api.crypto.com/price/v1/exchange/toncoin', headers=headers)
@@ -69,7 +76,7 @@ def get_ton_profit():
     kw_spent_for_24h = 75 / 1000 * 24 # 75w devide by 1000 and multiply by 24 to get how much kw spent in 24h
     electricity_consumption = kw_spent_for_24h * 0.07 # 0.07 - price for kw/h in usd
     daily_profit *= toncoin_usd_price # getting daily_profit in usd
-    return daily_profit - electricity_consumption
+    return daily_profit - electricity_consumption, toncoin_usd_price
 
 def usd_eur_price():
     '''Parse usd and eur price from cbr.ru'''
