@@ -16,9 +16,7 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-RUN pip freeze
-
-RUN apt-get update && playwright install && playwright install-deps 
+RUN apt-get update && playwright install firefox && playwright install-deps 
 
 COPY . /code/
 
