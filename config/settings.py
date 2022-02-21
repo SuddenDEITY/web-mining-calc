@@ -48,8 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'showgpu.apps.ShowgpuConfig',
+    'api.apps.ApiConfig',
     'parsing_app.apps.ParsingAppConfig',
     'debug_toolbar',
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,6 @@
 from django.test import Client,TestCase
 from django.urls import reverse
-from .models import GPU_Type
+from .models import GPU_Type,GPU
 
 class GPU_Type_Test(TestCase):
     def setUp(self):
@@ -15,11 +15,6 @@ class GPU_Type_Test(TestCase):
         self.assertEqual(f'{self.gpu_type.eth}', '44.0')
         self.assertEqual(f'{self.gpu_type.ton}', '2200.0')
 
-    def test_gpu_type_list_view(self): 
-        response = self.client.get(reverse('gpu_list'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'RTX 3060 Ti')
-        self.assertTemplateUsed(response, 'showgpu/gpu_type_list.html')
 
     def test_code_generation(self):
         self.assertEqual(f'{self.gpu_type.code}', 'rtx3060ti')
@@ -30,3 +25,17 @@ class GPU_Type_Test(TestCase):
 
     def test_primary_token(self):
         self.assertEqual(f'{self.gpu_type.primary_token}', 'eth')
+
+class GPU_Test(TestCase):
+    def setUp(self):
+        self.gpu = GPU.objects.create(
+            title='RTX 3060 Ti lalala',
+            price=45000,
+            payback=400,
+        )
+    def test_gpu_listing(self):
+        self.assertEqual(f'{self.gpu.title}', 'RTX 3060 Ti lalala')
+        self.assertEqual(f'{self.gpu.price}', '45000')
+        self.assertEqual(f'{self.gpu.payback}', '400')
+
+    
