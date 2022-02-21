@@ -4,7 +4,7 @@ from showgpu.models import GPU, GPU_Type,Current_Profit
 from celery import shared_task
 from django.utils import timezone
 import json
-
+from django.core.cache import cache
 
 class Data():
     current_profit = None
@@ -31,6 +31,9 @@ def initialize_parsing(self):
         GPU.objects.bulk_create(Data.bulk_data)
         cp = Data.current_profit
         cp.updated_at = timezone.now()
+        cache.clear()
+        cache.set("gpu_list", GPU.objects.all().select_related('gpu_type').order_by('payback_dual'), None)
+        cache.set("current_profit", cp, None)
         cp.save()
         print('updated')
     except:

@@ -1,6 +1,12 @@
 version: '3.9'
 
 services:
+  cache:
+    image: memcached
+    ports:
+      - "11211:11211"
+    entrypoint:
+      - memcached
   celery:
     build: .
     command: celery -A config worker -B
@@ -27,6 +33,7 @@ services:
     - 8000:8000
    depends_on:
     - db
+    - cache
   db:
    image: postgres
    volumes:
