@@ -20,7 +20,6 @@
         <div>Прибыль за 100 mh/s: {{ current_profit.eth_daily_profit_per_100mhs }} руб.</div>
         <div>Прибыль за 1 gh/s: {{ current_profit.ton_daily_profit_per_1ghs }} руб.</div>
     </div>
-
 </div>
 
 <table class="table">
@@ -40,23 +39,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for gpu in gpulist %}
-            <tr class="tr_minheigth">
-                <th>{{ gpu.shop }}</th>
-                <td class="gpu_title_left"><a href="{{ gpu.link }}">{{ gpu.title }}</a></td>
-                <td>{{ gpu.price }}</td>
-                <td>{{ gpu.gpu_type.eth }}</td>
-                <td>{{ gpu.gpu_type.ton }}</td>
-                <td class="icon"><img src="{% static 'assets/'|add:gpu.gpu_type.primary_token|add:'.png' %}">{{ gpu.gpu_type.day_profit }}₽</td>
-                <td class="icon"><img src="{% static 'assets/'|add:gpu.gpu_type.primary_token|add:'.png' %}">{{ gpu.gpu_type.month_profit }}₽</td>
-                <td class="icon"><img src="{% static 'assets/eth.png' %}"><img src="{% static 'assets/ton.png' %}">{{ gpu.gpu_type.day_profit_dual }}₽</td>
-                <td class="icon"><img src="{% static 'assets/eth.png' %}"><img src="{% static 'assets/ton.png' %}">{{ gpu.gpu_type.month_profit_dual }}₽</td>
-                <td>{{ gpu.payback }}</td>
-                <td>{{ gpu.payback_dual }}</td>
-            </tr>
-        {% endfor %}
     </tbody>
 </table>
 
-
 {% endblock content %}
+
+{% block domready %}
+    dataPrint('{{ gpulist|safe }}');
+{% endblock domready %}
