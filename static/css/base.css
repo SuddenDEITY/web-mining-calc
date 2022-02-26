@@ -27,3 +27,6 @@ td, th {
     align-items: flex-end;
     margin-bottom: 35px;
 }
+.active{
+    color: chocolate;
+}

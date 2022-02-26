@@ -27,23 +27,23 @@
         <tr>
             <th scope="col">Магазин</th>
             <th scope="col">Название</th>
-            <th scope="col">Цена</th>
-            <th scope="col" class="col">Хэшрейт eth</th>
-            <th scope="col" class="col">Хэшрейт ton</th>
-            <th scope="col" class="col">Профит в день</th>
-            <th scope="col" class="col">Профит в месяц</th>   
-            <th scope="col" class="col">Профит в день (Dual)</th>
-            <th scope="col" class="col">Профит в месяц (Dual)</th>
-            <th scope="col">Окупаемость</th>
-            <th scope="col">Окупаемость (Dual)</th>
+            <th scope="col"><span class="price" sortBy="asc">Цена</span></th>
+            <th scope="col" class="col"><span class="eth_hashrate" sortBy="asc">Хэшрейт eth</span></th>
+            <th scope="col" class="col"><span class="ton_hashrate" sortBy="asc">Хэшрейт ton</span></th>
+            <th scope="col" class="col"><span class="day_profit" sortBy="desc">Профит в день</span></th>
+            <th scope="col" class="col"><span class="month_profit" sortBy="desc">Профит в месяц</span></th>   
+            <th scope="col" class="col"><span class="day_profit_dual" sortBy="desc">Профит в день (Dual)</span></th>
+            <th scope="col" class="col"><span class="month_profit_dual" sortBy="desc">Профит в месяц (Dual)</span></th>
+            <th scope="col"><span class="payback" sortBy="asc">Окупаемость</span></th>
+            <th scope="col"><span class="payback_dual active" sortBy="asc">Окупаемость (Dual)</span></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tbody">
     </tbody>
 </table>
 
 {% endblock content %}
 
 {% block domready %}
-    dataPrint('{{ gpulist|safe }}');
+    dataInicialize('{{ gpulist|safe }}');
 {% endblock domready %}

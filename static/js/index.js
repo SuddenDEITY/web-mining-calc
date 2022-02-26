@@ -1,9 +1,38 @@
-function dataPrint(data){
-    let jsonObject = JSON.parse(data);
+var jsonObject;
+
+function dataInicialize(data) {
+    jsonObject = JSON.parse(data);
+    printData();
+}
+
+$(function(){
+    $('span').click(function(){
+       $('span').removeClass('active');
+       let asc = ( $(this).attr('sortBy') );
+       let className = ( $(this).attr('class') );
+       $(this).addClass('active');
+       sortData(className, asc);
+       let sortByValue = (asc == 'asc') ? 'desc' : ((asc == 'desc') ? 'asc' : 'asc');
+       $(this).attr('sortBy', sortByValue);
+    });
+ });
+
+function sortData(prop, asc) {
+    window.jsonObject.sort(function(a, b) {
+        if (asc == 'asc') {
+            return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0);
+        } else {
+            return (b[prop] > a[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0);
+        }
+    });
+    printData();
+}
+
+function printData() {
+    $('.tbody-tr').remove();
     $.each(jsonObject, function(i, obj) {
-        console.log(obj);
-        $('tbody').append(`
-        <tr>
+        $('.tbody').append(`
+        <tr class="tbody-tr">
         <td>${obj.shop}</td>
         <td><a href='${obj.link}'>${obj.title}</a></td>
         <td>${obj.price}</td>
